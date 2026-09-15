@@ -6,9 +6,9 @@
 ![DAX](https://img.shields.io/badge/DAX-2B579A?style=flat)
 ![Power Query](https://img.shields.io/badge/Power%20Query-M-217346?style=flat)
 
-<p align="center"><img src="docs/pages/02-detailed.svg" width="100%" alt="Detailed page layout"></p>
+<p align="center"><img src="docs/screenshots/02-detailed.png" width="100%" alt="Detailed page"></p>
 
-> Built for a knitted-apparel manufacturer. The report runs on live company data, so the `.pbix` and its data are not published. Page images are layout wireframes generated from the report definition, and the DAX is exported from the model.
+> Built for a knitted-apparel manufacturer. Screenshots are taken from the live report, so the figures are a point-in-time snapshot. The `.pbix` file is not included. The DAX is exported from the model.
 
 ---
 
@@ -29,13 +29,13 @@ The knitting shop-floor system reports four things separately: fabric orders (FO
 
 | Page | Answers | |
 |---|---|---|
-| **Overall** | Fabric orders and forecasts, PO status, machine job table (start, forecast, end, kg planned vs produced, %), machines by type / diameter / status | [layout](docs/pages/01-overall.svg) |
-| **Detailed** | Gantt of every running job by diameter, gauge of produced vs planned kg, % done, slicers for FO, PO, design, status, diameter, type | [layout](docs/pages/02-detailed.svg) |
+| **Overall** | Fabric orders and forecasts, PO status, machine job table (start, forecast, end, kg planned vs produced, %), machines by type / diameter / status | [screenshot](docs/screenshots/01-overall.png) |
+| **Detailed** | Gantt of every running job by diameter, gauge of produced vs planned kg, % done, slicers for FO, PO, design, status, diameter, type | [screenshot](docs/screenshots/02-detailed.png) |
 
 <details>
-<summary>Show the Overall page layout</summary>
+<summary>Show the Overall page</summary>
 
-<img src="docs/pages/01-overall.svg" width="100%" alt="Overall">
+<img src="docs/screenshots/01-overall.png" width="100%" alt="Overall">
 </details>
 
 ## How it works
@@ -95,4 +95,4 @@ Full model in [`dax/model.dax`](dax/model.dax). The same capacity idea is scaled
 `Power BI` `DAX (date & text parsing, forecasting)` `Power Query` `Gantt visual` `Manufacturing execution data` `Circular knitting`
 
 ---
-<sub>Author: <a href="https://github.com/Sharmaji12369">Srijan Sharma</a> · Data & BI Analyst. Shared as a portfolio piece; the report, data and internal references belong to the employer and are not included.</sub>
+<sub>Author: <a href="https://github.com/Sharmaji12369">Srijan Sharma</a> · Data & BI Analyst. Shared as a portfolio piece; the report file itself belongs to the employer and is not included.</sub>
