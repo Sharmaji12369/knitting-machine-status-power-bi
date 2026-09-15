@@ -1,0 +1,63 @@
+// Measures, calculated columns and calculated tables exported from the semantic model.
+// Table and column names are as built; a few internal site / partner codes are anonymised.
+
+// ======================================================================
+// TABLE: MC_STATUS
+// ======================================================================
+
+-- Calculated column
+MC_STATUS[End Date F] =
+    IF(
+        NOT(ISBLANK(MC_Status[End Time])),
+        MC_Status[End Time],
+        IF(
+            NOT(ISBLANK(MC_Status[Forecast Calculated])) && FIND("d", MC_Status[Forecast Calculated], 1, 0) > 0,
+            VAR Days = VALUE(LEFT(MC_Status[Forecast Calculated], FIND("d", MC_Status[Forecast Calculated]) - 1))
+            VAR HrsText = MID(MC_Status[Forecast Calculated], FIND("d", MC_Status[Forecast Calculated]) + 2, FIND("hrs", MC_Status[Forecast Calculated]) - FIND("d", MC_Status[Forecast Calculated]) - 2)
+            VAR Hours = VALUE(TRIM(HrsText))
+            RETURN NOW() + Days + Hours/24,
+            BLANK()
+        )
+    )
+
+-- Calculated column
+MC_STATUS[Forecast Calculated] =
+    VAR OrigForecast = MC_Status[Forecast]
+    VAR HasForecast = NOT(ISBLANK(OrigForecast)) && LEN(OrigForecast) > 3 && FIND("d", OrigForecast, 1, 0) > 0
+    RETURN
+    IF(
+        HasForecast,
+        OrigForecast,
+        IF(
+            NOT(ISBLANK(MC_Status[Start Time])) && MC_Status[Fabric (Kg)] > 0,
+            VAR DaysRunning = MAX(DATEDIFF(MC_Status[Start Time], NOW(), HOUR) / 24, 0.01)
+            VAR DailyRate = MC_Status[Fabric (Kg)] / DaysRunning
+            VAR Remaining = MAX(MC_Status[M/C Qtys (Kg)] - MC_Status[Fabric (Kg)], 0)
+            VAR ForecastDays = IF(DailyRate > 0, Remaining / DailyRate, 0)
+            VAR WholeDays = INT(ForecastDays)
+            VAR ForecastHours = ROUND((ForecastDays - WholeDays) * 24, 0)
+            RETURN
+                IF(
+                    WholeDays = 0 && ForecastHours = 0,
+                    "Done",
+                    WholeDays & "d " & ForecastHours & "hrs"
+                ),
+            BLANK()
+        )
+    )
+
+-- Calculated column
+MC_STATUS[Percentage Calculation] =
+    MC_STATUS[Fabric (Kg)]/MC_STATUS[M/C Qtys (Kg)]
+
+-- Calculated column
+MC_STATUS[BALQTY] =
+    MC_STATUS[M/C Qtys (Kg)]-MC_STATUS[Fabric (Kg)]
+
+-- Calculated column
+MC_STATUS[NEW FORECAST] =
+    MC_STATUS[BALQTY]/MC_STATUS[MC Cap (Kg/Day)]
+
+-- Calculated column
+MC_STATUS[NEWENDDATE] =
+    TODAY()+MC_STATUS[NEW FORECAST]

@@ -1,0 +1,7 @@
+# Report files hold company data and connection details - never commit them
+*.pbix
+*.pbit
+*.pbip
+.pbi/
+*.abf
+.env
